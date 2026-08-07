@@ -2,7 +2,7 @@ tags
 test.sh
 .luarc.json
 nvim
-
+.github
 spell/
 
 # In your personal fork, you likely want to comment this, since it's recommended to track
