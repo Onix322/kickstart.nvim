@@ -690,6 +690,9 @@ do
   --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
   --  See `:help lsp-config` for information about keys and how to configure
   ---@type table<string, vim.lsp.Config>
+
+  local lombok_path = vim.fn.stdpath 'config' .. '/external/lombok.jar'
+
   local servers = {
     -- clangd = {},
     -- gopls = {},
@@ -701,11 +704,16 @@ do
     --
     -- But for many setups, the LSP (`ts_ls`) will work just fine
     ts_ls = {},
-    jdtls = {},
+    jdtls = {
+      cmd = {
+        'jdtls',
+        '--jvm-arg=-javaagent:' .. lombok_path,
+      },
+    },
     angularls = {},
     html = {},
     cssls = {},
-    stylua = {}, -- Used to format Lua code
+    -- stylua = {}, -- Used to format Lua code
 
     -- Special Lua Config, as recommended by neovim help docs
     lua_ls = {
@@ -817,6 +825,12 @@ do
       css = { 'prettierd', 'prettier', stop_after_first = true },
       scss = { 'prettierd', 'prettier', stop_after_first = true },
       java = { 'google-java-format' },
+    },
+
+    formatters = {
+      ['google-java-format'] = {
+        prepend_args = { '--aosp' },
+      },
     },
   }
 
