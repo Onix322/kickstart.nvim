@@ -704,15 +704,10 @@ do
     --
     -- But for many setups, the LSP (`ts_ls`) will work just fine
     ts_ls = {},
-    jdtls = {
-      cmd = {
-        'jdtls',
-        '--jvm-arg=-javaagent:' .. lombok_path,
-      },
-    },
     angularls = {},
     html = {},
     cssls = {},
+    -- jdtls = {} configured in custom.plugins.nvim-jdtls.lua
     -- stylua = {}, -- Used to format Lua code
 
     -- Special Lua Config, as recommended by neovim help docs
@@ -753,6 +748,7 @@ do
     gh 'mason-org/mason.nvim',
     gh 'mason-org/mason-lspconfig.nvim',
     gh 'WhoIsSethDaniel/mason-tool-installer.nvim',
+    gh 'mfussenegger/nvim-jdtls',
   }
 
   -- Automatically install LSPs and related tools to stdpath for Neovim
@@ -760,7 +756,7 @@ do
 
   -- Translates between nvim-lspconfig server names and mason.nvim package names (e.g. lua_ls <-> lua-language-server)
   require('mason-lspconfig').setup {
-    automatic_enable = false, -- Change this to true if you want to automatically enable servers that are installed manually (e.g. via :Mason / :MasonInstall)
+    automatic_enable = true, -- Change this to true if you want to automatically enable servers that are installed manually (e.g. via :Mason / :MasonInstall)
   }
 
   -- Ensure the servers and tools above are installed
@@ -809,7 +805,7 @@ do
         -- python = true,
       }
       if enabled_filetypes[vim.bo[bufnr].filetype] then
-        return { timeout_ms = 500 }
+        return { timeout_ms = 2500 }
       else
         return nil
       end
@@ -830,11 +826,11 @@ do
       java = { 'google-java-format' },
     },
 
-    formatters = {
-      ['google-java-format'] = {
-        prepend_args = { '--aosp' },
-      },
-    },
+    -- formatters = {
+    --  ['google-java-format'] = {
+    --    prepend_args = { '--aosp' },
+    --  },
+    --},
   }
 
   vim.keymap.set({ 'n', 'v' }, '<leader>f', function() require('conform').format { async = true } end, { desc = '[F]ormat buffer' })
@@ -1008,7 +1004,7 @@ do
   -- NOTE: You can add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
-  -- require 'custom.plugins'
+  require 'custom.plugins.nvim-jdtls'
 end
 
 -- The line beneath this is called `modeline`. See `:help modeline`
